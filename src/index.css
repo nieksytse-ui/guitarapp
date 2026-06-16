@@ -1,0 +1,118 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 250 60% 99%;
+    --foreground: 250 25% 12%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 250 25% 12%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 250 25% 12%;
+
+    --primary: 256 72% 58%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 250 40% 96%;
+    --secondary-foreground: 250 25% 20%;
+
+    --muted: 250 30% 95%;
+    --muted-foreground: 250 8% 42%;
+
+    --accent: 256 60% 95%;
+    --accent-foreground: 256 60% 32%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+
+    --amber: 38 95% 52%;
+    --amber-foreground: 30 40% 12%;
+
+    --border: 250 25% 90%;
+    --input: 250 25% 88%;
+    --ring: 256 72% 58%;
+
+    --radius: 0.9rem;
+  }
+
+  .dark {
+    --background: 250 30% 8%;
+    --foreground: 250 20% 96%;
+
+    --card: 250 28% 11%;
+    --card-foreground: 250 20% 96%;
+
+    --popover: 250 28% 11%;
+    --popover-foreground: 250 20% 96%;
+
+    --primary: 256 84% 70%;
+    --primary-foreground: 250 30% 10%;
+
+    --secondary: 250 20% 18%;
+    --secondary-foreground: 250 20% 92%;
+
+    --muted: 250 20% 16%;
+    --muted-foreground: 250 10% 64%;
+
+    --accent: 250 25% 22%;
+    --accent-foreground: 250 20% 92%;
+
+    --destructive: 0 62% 52%;
+    --destructive-foreground: 0 0% 100%;
+
+    --amber: 38 92% 55%;
+    --amber-foreground: 30 40% 10%;
+
+    --border: 250 20% 22%;
+    --input: 250 20% 24%;
+    --ring: 256 84% 70%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: 'cv11', 'ss01';
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Zachte achtergrond-gradient voor de speelse look */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background:
+      radial-gradient(60% 50% at 10% 0%, hsl(var(--primary) / 0.12), transparent 60%),
+      radial-gradient(50% 50% at 100% 0%, hsl(var(--amber) / 0.1), transparent 55%);
+    pointer-events: none;
+  }
+}
+
+@layer utilities {
+  .glass {
+    @apply bg-card/70 backdrop-blur-xl;
+  }
+
+  /* Verberg scrollbar maar behoud scrollfunctie */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
