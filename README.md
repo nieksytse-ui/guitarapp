@@ -91,8 +91,14 @@ src/
 ### Data & privacy
 
 Alle voortgang (XP, activiteiten, records, eigen patronen/sessies) wordt **lokaal**
-in je browser opgeslagen via IndexedDB. Er is geen server en er worden geen gegevens
-verstuurd. Wis de site-data van je browser om opnieuw te beginnen.
+in je browser opgeslagen via IndexedDB; je instellingen in localStorage. Er is geen
+server en er worden geen gegevens verstuurd. Cookies worden niet gebruikt — alleen
+het wissen van *alle site-data* (of een privévenster sluiten) verwijdert je voortgang.
+
+Omdat er geen cloud-back-up is, kun je via **Instellingen → Back-up & herstel** je
+voortgang als `.json`-bestand **exporteren** en later (of op een ander apparaat) weer
+**importeren**.
+
 
 ### Liedjes & licenties
 

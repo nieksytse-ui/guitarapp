@@ -21,6 +21,8 @@ interface ProgressState {
 
   /** Laadt alle voortgang uit IndexedDB (eenmalig bij opstarten). */
   load: () => Promise<void>
+  /** Herlaadt alle voortgang uit IndexedDB (bv. na het herstellen van een back-up). */
+  reload: () => Promise<void>
   /** Logt een voltooide activiteit (kent XP toe en bewaart hem). */
   logActivity: (input: NewActivity) => Promise<Activity>
   /** Verwerkt een akkoordwissel-resultaat en houdt het record bij. */
@@ -53,6 +55,20 @@ export const useProgressStore = create<ProgressState>((set, get) => ({
       // Bijv. privémodus zonder IndexedDB: ga verder met lege, in-memory state.
       console.warn('Kon voortgang niet laden uit IndexedDB:', err)
       set({ loaded: true })
+    }
+  },
+
+  reload: async () => {
+    try {
+      const [activities, records] = await Promise.all([
+        db.getAllActivities(),
+        db.getAllRecords(),
+      ])
+      const recordMap: Record<string, ChordChangeRecord> = {}
+      for (const r of records) recordMap[r.combo] = r
+      set({ activities, records: recordMap, loaded: true })
+    } catch (err) {
+      console.warn('Kon voortgang niet herladen uit IndexedDB:', err)
     }
   },
 

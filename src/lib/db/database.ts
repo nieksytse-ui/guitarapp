@@ -165,3 +165,43 @@ export async function clearAllData(): Promise<void> {
     db.clear('customChords'),
   ])
 }
+
+// --- Back-up / herstel -----------------------------------------------------
+
+/** Alle IndexedDB-gegevens in één object (voor export). */
+export interface BackupData {
+  activities: Activity[]
+  records: ChordChangeRecord[]
+  templates: SessionTemplate[]
+  customPatterns: StrummingPattern[]
+  customChords: ChordShape[]
+}
+
+/** Haalt alle lokale gegevens op om te exporteren naar een back-upbestand. */
+export async function exportAllData(): Promise<BackupData> {
+  const [activities, records, templates, customPatterns, customChords] = await Promise.all([
+    getAllActivities(),
+    getAllRecords(),
+    getAllTemplates(),
+    getAllCustomPatterns(),
+    getAllCustomChords(),
+  ])
+  return { activities, records, templates, customPatterns, customChords }
+}
+
+/**
+ * Zet een back-up terug. Vervangt (replace) alle bestaande gegevens, zodat het
+ * resultaat exact overeenkomt met het back-upbestand.
+ */
+export async function importAllData(data: Partial<BackupData>): Promise<void> {
+  if (!hasIndexedDB()) throw new Error('IndexedDB is niet beschikbaar in deze browser.')
+  const db = await getDB()
+  await clearAllData()
+  const tasks: Promise<unknown>[] = []
+  for (const a of data.activities ?? []) tasks.push(db.put('activities', a))
+  for (const r of data.records ?? []) tasks.push(db.put('records', r))
+  for (const t of data.templates ?? []) tasks.push(db.put('templates', t))
+  for (const p of data.customPatterns ?? []) tasks.push(db.put('customPatterns', p))
+  for (const c of data.customChords ?? []) tasks.push(db.put('customChords', c))
+  await Promise.all(tasks)
+}
